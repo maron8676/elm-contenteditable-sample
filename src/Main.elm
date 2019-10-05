@@ -2,7 +2,7 @@ module Main exposing (main)
 
 import Browser
 import Html exposing (Html, div, label, text)
-import Html.Attributes exposing (contenteditable)
+import Html.Attributes exposing (contenteditable, value)
 import Html.Events exposing (onInput)
 
 
@@ -31,7 +31,7 @@ init =
 view : Model -> Html Msg
 view model =
     div []
-        [ div [ contenteditable True, onInput UpdateText ] [ text model.text ]
+        [ div [ contenteditable True, onInput UpdateText, value model.text ] [ text model.text ]
         , label [] [ text <| "edited: " ++ model.text ]
         ]
 
