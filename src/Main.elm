@@ -3,7 +3,8 @@ module Main exposing (main)
 import Browser
 import Html exposing (Html, div, label, text)
 import Html.Attributes exposing (contenteditable, value)
-import Html.Events exposing (onInput)
+import Html.Events exposing (on)
+import Json.Decode as JD
 
 
 main : Platform.Program () Model Msg
@@ -31,7 +32,13 @@ init =
 view : Model -> Html Msg
 view model =
     div []
-        [ div [ contenteditable True, onInput UpdateText, value model.text ] [ text model.text ]
+        [ div
+            [ contenteditable True
+            , on "input" <|
+                JD.map UpdateText
+                    (JD.at [ "target", "textContent" ] JD.string)
+            ]
+            [ text model.text ]
         , label [] [ text <| "edited: " ++ model.text ]
         ]
 
