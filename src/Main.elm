@@ -3,7 +3,7 @@ module Main exposing (main)
 import Browser
 import Html exposing (Html, div, label, text)
 import Html.Attributes exposing (contenteditable, value)
-import Html.Events exposing (on)
+import Html.Events exposing (keyCode, on, preventDefaultOn)
 import Json.Decode as JD
 
 
@@ -23,6 +23,7 @@ type alias Model =
 
 type Msg
     = UpdateText String
+    | NoOp
 
 
 init =
@@ -34,7 +35,9 @@ view model =
     div []
         [ div
             [ contenteditable True
-            , on "input" <|
+            , preventDefaultOn "keydown"
+                (JD.map (\x -> ( NoOp, isEnterCode x )) <| keyCode)
+            , on "blur" <|
                 JD.map UpdateText
                     (JD.at [ "target", "textContent" ] JD.string)
             ]
@@ -48,3 +51,15 @@ update msg model =
     case msg of
         UpdateText newText ->
             { model | text = newText }
+
+        NoOp ->
+            model
+
+
+isEnterCode : Int -> Bool
+isEnterCode code =
+    let
+        enterCode =
+            13
+    in
+    code == enterCode
