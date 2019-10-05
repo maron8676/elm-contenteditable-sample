@@ -1,0 +1,8 @@
+{
+    "elm.analyseEnabled": true,
+    "elm.includeParamsInUserAutocomplete": true,
+    "elm.includeUserFunctionDocumentation": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true
+}
